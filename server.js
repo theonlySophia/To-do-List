@@ -3,7 +3,7 @@ import express from "express";
 import {PORT} from "./Config/constants.js";
 import notFound from "./Middlewares/notFound.js";
 import errHandler from "./Middlewares/errHandler.js";
-
+import {todoRouter} from "./Routes/todoRouter.js";
 
 const app = express()
 app.use(express.json())
@@ -15,9 +15,13 @@ app.get("/", (req, res)=>{
     })
 })
 
+app.use('/todo', todoRouter)
+
 // Linking middlewares to express application
 app.use(notFound)
 app.use(errHandler)
+
+
 
 const startApp = ()=>{
     app.listen(PORT, ()=>{

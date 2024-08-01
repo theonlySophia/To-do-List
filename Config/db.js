@@ -1,7 +1,3 @@
-// const postgres = require("postgres");
-// const { dbPort, host, database, username, password } = require("./constants");
-
-
 
 // import database
 //import postgres after installing it
