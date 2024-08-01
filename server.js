@@ -4,6 +4,7 @@ import {PORT} from "./Config/constants.js";
 import notFound from "./Middlewares/notFound.js";
 import errHandler from "./Middlewares/errHandler.js";
 
+
 const app = express()
 app.use(express.json())
 app.use(express.urlencoded({extended : true}))
