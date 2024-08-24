@@ -67,7 +67,56 @@ const update = AsyncHandler(async(req, res, next)=>{
     }
 })
 
+const getAllTasks = AsyncHandler(async(req,res, next)=>{
+    try{
+        const getTodos = await sql `SELECT * from todo`;
+        return res.status(200).send(getTodos);
+    }catch(error){
+        next(error);
+    }
+})
+
+const getOneTask = AsyncHandler(async(req,res,next)=>{
+    try{
+        const id = req.params.id;
+        // const id = req.body;
+        console.log("new day same good");
+        if(!id){
+            throw new Error("User id required");
+        }
+        console.log("new day great good");
+
+        const getOnlyOne =  await sql `SELECT * from todo WHERE id = ${id}`;
+        if(getOnlyOne.length == 0){
+            return res.status(404).json({
+                message: "User not found"
+            });
+        }
+        return res.send(getOnlyOne[0]);
+
+    }catch(error){
+        next(error);
+    }
+})
+
+// delete a task controller
+const deleteTask = AsyncHandler(async(req, res, next) =>{
+    try{
+        const {id} = req.body;
+        if(!id){
+            throw new Error("User id required");
+        }
+
+        const deleteOne = await sql `delete from todo where id = ${id} returning *`;
+        return res.status(200).send(deleteOne); 
+
+    }catch(error){
+        next(error);
+    }
+
+})
+//delete all tasks controller
 
 
 
-export {create, update};
+export {create, update, getOneTask, getAllTasks, deleteTask};
