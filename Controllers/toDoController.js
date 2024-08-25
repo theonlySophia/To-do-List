@@ -88,11 +88,13 @@ const getOneTask = AsyncHandler(async(req,res,next)=>{
 
         const getOnlyOne =  await sql `SELECT * from todo WHERE id = ${id}`;
         if(getOnlyOne.length == 0){
-            return res.status(404).json({
-                message: "User not found"
-            });
+            res.status(404)
+            throw new Error("Task not found");
         }
-        return res.send(getOnlyOne[0]);
+        return res.status(200).json({
+            message: "Here is requested todo",
+            result: getOnlyOne[0]
+        });
 
     }catch(error){
         next(error);
@@ -108,15 +110,29 @@ const deleteTask = AsyncHandler(async(req, res, next) =>{
         }
 
         const deleteOne = await sql `delete from todo where id = ${id} returning *`;
-        return res.status(200).send(deleteOne); 
+        return res.status(200).json({
+            message: "The deleted todo",
+            result: deleteOne[0]
+        }); 
 
     }catch(error){
         next(error);
     }
 
 })
+
 //delete all tasks controller
+const deleteAllTasks = AsyncHandler(async(req,res,next)=>{
+    try{
+        const deleteAll = await sql `delete from todo`;
+        return res.status(200).json({
+            message: "All Todos successfully deleted"
+        });
+
+    }catch(error){
+        next(error);
+    }
+})
 
 
-
-export {create, update, getOneTask, getAllTasks, deleteTask};
+export {create, update, getOneTask, getAllTasks, deleteTask, deleteAllTasks};
